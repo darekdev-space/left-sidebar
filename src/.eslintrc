@@ -8,6 +8,45 @@
       "jsx-a11y"
     ],
     "rules": {
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "import/extensions": "off",
+      "indent": ["warn", 4, {"SwitchCase": 1}],
+      "comma-style": ["error", "last"],
+      "max-len": [2, 120, 4, {"ignoreUrls": true}],
+      "array-bracket-spacing": ["error", "never"],
+      "linebreak-style": 0,
+      "array-callback-return": "error",
+      "class-methods-use-this": "off",
+      "comma-spacing": [
+        "error",
+        {
+          "after": true,
+          "before": false
+        }
+      ],
+      "comma-dangle": "off",
+      "brace-style": ["error", "1tbs"],
+      "arrow-body-style": "off",
+      "arrow-parens": ["error", "as-needed", {"requireForBlockBody": true}],
+      "arrow-spacing": [
+        "error",
+        {
+          "after": true,
+          "before": true
+        }
+      ],
+      "no-multi-spaces": "error",
+      "no-whitespace-before-property": "error",
+      "object-shorthand": "error",
+      "no-useless-constructor": "error",
+      "react/jsx-indent": "off",
+      "react/jsx-indent-props": "off",
+      "object-curly-newline": "off",
+      "object-curly-spacing": [
+        "error",
+        "never"
+      ],
+      "object-property-newline": "error",
+      "react/jsx-tag-spacing": "off"
     }
   }
