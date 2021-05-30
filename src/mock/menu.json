@@ -1,0 +1,53 @@
+{
+  "menuItems": [
+    {
+      "id": "create",
+      "url": "/example",
+      "label": "Create",
+      "subItems": [
+        {
+          "id": "vehicle_purchase",
+          "url": "/example",
+          "label": "Vehicle Purchase",
+          "subItems": []
+        }
+      ]
+    },
+    {
+      "id": "home",
+      "url": "/",
+      "label": "Home",
+      "subItems": []
+    },
+    {
+      "id": "my_dashboards",
+      "url": "/example",
+      "label": "My dashboards",
+      "subItems": []
+    },
+    {
+      "id": "spaces",
+      "url": "/example",
+      "label": "Spaces",
+      "subItems": []
+    },
+    {
+      "id": "bugs",
+      "url": "/example",
+      "label": "Bugs",
+      "subItems": []
+    },
+    {
+      "id": "epics",
+      "url": "/example",
+      "label": "Epics",
+      "subItems": []
+    },
+    {
+      "id": "goals",
+      "url": "/example",
+      "label": "Goals",
+      "subItems": []
+    }
+  ]
+}
