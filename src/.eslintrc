@@ -47,6 +47,7 @@
         "never"
       ],
       "object-property-newline": "error",
-      "react/jsx-tag-spacing": "off"
+      "react/jsx-tag-spacing": "off",
+      "react/require-default-props": "off"
     }
   }
