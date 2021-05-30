@@ -1,9 +1,13 @@
 .menu__header
   display: flex
-  align-items: center
-  justify-content: space-between
+  flex-direction: column
+
+  .menu__header__title__box
+    display: flex
+    align-items: center
 
   .menu__header__title
+    margin-left: 30px
     p
       font-family: Lato, sans-serif
       color: #ececec
@@ -12,5 +16,8 @@
         font-size: 22px
       &:last-child
         font-size: 26px
+        font-weight: 600
+        color: #ffffff
+
 
 

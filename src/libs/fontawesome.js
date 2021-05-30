@@ -1,6 +1,10 @@
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
-    faMeteor
+    faMeteor,
+    faSearch
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faMeteor);
+library.add(
+    faMeteor,
+    faSearch
+);
