@@ -1,3 +1,10 @@
+export const getChildrenPaths = (menu, parentPath, recursive = false) => {
+    return Object.keys(menu || {})
+        .filter((path) => {
+            return path.startsWith(parentPath) && (recursive || path.length === parentPath.length + 2);
+        });
+};
+
 const getPath = (path, index) => {
     if (path) {
         return `${path}.${index + 1}`;
@@ -7,12 +14,15 @@ const getPath = (path, index) => {
 };
 
 const creatFlatStructure = (items, path = '') => {
-    return (items || []).reduce((flatStructure, {subItems, ...rest}, idx) => {
+    return (items || []).reduce((flatStructure, {
+        subItems,
+        ...rest
+    }, idx) => {
         const nextPath = getPath(path, idx);
 
         const nextItem = {
             ...rest,
-            hasChild: !!subItems?.length || false,
+            hasChildren: !!subItems?.length || false,
             isVisible: !nextPath.includes('.'),
             isActive: false,
             isExpand: false
@@ -33,9 +43,23 @@ const creatFlatStructure = (items, path = '') => {
     }, {});
 };
 
+export const collapseAllLevels = (menu) => {
+    return Object.entries(menu)
+        .reduce((collapsedMenu, [path, item]) => {
+            return {
+                ...collapsedMenu,
+                [path]: {
+                    ...item,
+                    isExpand: false,
+                    isVisible: !path.includes('.')
+                }
+            };
+        }, {});
+};
+
 const prepareMenu = ({menuItems} = []) => {
     if (!menuItems?.length) {
-        return [];
+        return {};
     }
 
     return creatFlatStructure(menuItems);

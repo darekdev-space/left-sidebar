@@ -1,61 +1,102 @@
-import React, {useRef} from 'react';
+import React, {memo, useCallback, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {Scrollbars} from 'react-custom-scrollbars-2';
 import {AutoSizer, List} from 'react-virtualized';
+import {withRouter} from 'react-router-dom';
+
+import useMenuVisibility from './hook/useMenuLogic';
 
 import './sass/MenuList.sass';
-import useMenuLogic from './hook/useMenuLogic';
+
 import MenuItem from '../MenuItem/MenuItem';
 
-const listStyle = {overflowX: false, overflowY: false};
-const ITEM_WIDTH = 35;
+const EnhancedMenuItem = withRouter(memo(MenuItem));
+
+const listStyle = {
+    overflowX: false,
+    overflowY: false
+};
+const ITEM_WIDTH = 45;
 
 const MenuList = (props) => {
-    const {menu} = props;
+    const {
+        menu,
+        toggleExpandLevel
+    } = props;
 
     const menuListRef = useRef(null);
-    const {visibleItems} = useMenuLogic(menu);
+    const {visibleItems} = useMenuVisibility(menu);
 
-    const renderMenuItem = ({index, style}) => {
-        const [path, item] = visibleItems[index];
-        const {id, url, label} = item;
+    const handleScroll = useCallback((e) => {
+        const {
+            scrollTop,
+            scrollLeft
+        } = e.target;
+        const {Grid} = menuListRef.current;
+        Grid.handleScrollEvent({
+            scrollTop,
+            scrollLeft
+        });
+    }, []);
+
+    const renderMenuItem = ({
+        index,
+        style
+    }) => {
+        const [path, {
+            subItem,
+            ...rest
+        }] = visibleItems[index];
 
         return (
-            <MenuItem
+            <EnhancedMenuItem
                 key={path}
-                id={id}
-                url={url}
-                label={label}
                 style={style}
                 path={path}
+                toggleExpandLevel={toggleExpandLevel}
+                {...rest}
             />
         );
     };
 
     const renderMenuList = (width, height) => {
         return (
-            <List
-                height={height}
-                width={width}
-                rowHeight={ITEM_WIDTH}
-                rowRenderer={renderMenuItem}
-                style={listStyle}
-                ref={menuListRef}
-                rowCount={visibleItems.length}
-            />
+            <Scrollbars
+                onScroll={handleScroll}
+                style={{
+                    height,
+                    width
+                }}
+                autoHide
+            >
+                <List
+                    height={height}
+                    width={width}
+                    rowHeight={ITEM_WIDTH}
+                    rowRenderer={renderMenuItem}
+                    style={listStyle}
+                    ref={menuListRef}
+                    rowCount={visibleItems.length}
+                />
+            </Scrollbars>
         );
     };
 
     return (
         <div className="menu__list">
             <AutoSizer>
-                {({width, height}) => renderMenuList(width, height)}
+                {({
+                    width,
+                    height
+                }) => renderMenuList(width, height)}
             </AutoSizer>
         </div>
     );
 };
 
 MenuList.propTypes = {
-    menu: PropTypes.shape({})
+    menu: PropTypes.shape({}),
+    toggleExpandLevel: PropTypes.func
 };
 
 export default MenuList;

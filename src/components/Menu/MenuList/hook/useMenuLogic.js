@@ -1,18 +1,27 @@
-import {useEffect, useState} from 'react';
-import getVisibleItems from '../helpers/menuListHelpers';
+import {useEffect, useMemo, useState} from 'react';
+import {isEqual} from 'underscore';
 
-const useMenuLogic = (menu) => {
+import getVisibleItems from '../helpers/menuListHelpers';
+import usePrevious from '../../../../hooks/usePrevious';
+
+const useMenuVisibility = (menu) => {
     const [visibleItems, setVisibleItems] = useState([]);
 
-    // add usePrevious
+    const prevMenu = usePrevious(menu);
+
+    const sortByPath = (items) => {
+        return items.sort(([pathA], [pathB]) => {
+            return pathA.localeCompare(pathB, {}, {numeric: true});
+        });
+    };
 
     useEffect(() => {
-        if (Object.keys(menu || {}).length) {
-            setVisibleItems(getVisibleItems(menu));
+        if (Object.keys(menu || {}).length && !isEqual(prevMenu, menu)) {
+            setVisibleItems(sortByPath(getVisibleItems(menu)));
         }
-    }, [menu]);
+    }, [menu, prevMenu]);
 
-    return {visibleItems};
+    return useMemo(() => ({visibleItems}), [visibleItems]);
 };
 
-export default useMenuLogic;
+export default useMenuVisibility;

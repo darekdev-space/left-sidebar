@@ -1,9 +1,51 @@
-import {useEffect, useState} from 'react';
-import prepareMenu from '../helpers/menuHelpers';
+import {useCallback, useEffect, useMemo, useState} from 'react';
+import {isEqual} from 'underscore';
+
+import prepareMenu, {getChildrenPaths} from '../helpers/menuHelpers';
+
 import axiosMock from '../../../mock/mockService';
 
-const useMenuService = () => {
-    const [menu, setMenu] = useState({});
+const useMenuService = (staticMenu, isHovered) => {
+    const [menu, setMenu] = useState(prepareMenu(staticMenu || {}));
+
+    const toggleExpandLevel = useCallback((path) => {
+        const isCollapse = menu[path].isExpand;
+        const childrenPaths = getChildrenPaths(menu, path, isCollapse);
+
+        const nextChildren = childrenPaths.reduce((updatedChildren, childPath) => {
+            return {
+                ...updatedChildren,
+                [childPath]: {
+                    ...menu[childPath],
+                    isVisible: !menu[childPath].isVisible,
+                    ...(isCollapse ? {isExpand: false} : {})
+                }
+            };
+        }, {});
+
+        const nextParent = {
+            [path]: {
+                ...menu[path],
+                isExpand: !menu[path].isExpand
+            }
+        };
+
+        setMenu({...menu, ...nextChildren, ...nextParent});
+    }, [menu]);
+
+    const collapseAllLevels = useCallback(() => {
+        return Object.entries(menu)
+            .reduce((collapsedMenu, [path, item]) => {
+                return {
+                    ...collapsedMenu,
+                    [path]: {
+                        ...item,
+                        isExpand: false,
+                        isVisible: !path.includes('.')
+                    }
+                };
+            }, {});
+    }, [menu]);
 
     const fetchMenu = async () => {
         try {
@@ -16,10 +58,23 @@ const useMenuService = () => {
     };
 
     useEffect(() => {
-        fetchMenu().then();
-    }, []);
+        if (!isHovered) {
+            const nextMenu = collapseAllLevels();
+            setMenu(prevMenu => (isEqual(prevMenu, nextMenu) ? prevMenu : nextMenu));
+        }
+    }, [collapseAllLevels, isHovered]);
 
-    return menu;
+    useEffect(() => {
+        if (!staticMenu) {
+            fetchMenu()
+                .then();
+        }
+    }, [staticMenu]);
+
+    return useMemo(() => ({
+        menu,
+        toggleExpandLevel
+    }), [menu, toggleExpandLevel]);
 };
 
 export default useMenuService;

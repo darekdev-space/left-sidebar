@@ -2,12 +2,13 @@
   "menuItems": [
     {
       "id": "create",
-      "url": "/example",
+      "url": null,
       "label": "Create",
+      "icon": "plus",
       "subItems": [
         {
           "id": "vehicle_purchase",
-          "url": "/example",
+          "url": "/example/vehicle_purchase",
           "label": "Vehicle Purchase",
           "subItems": []
         }
@@ -17,36 +18,49 @@
       "id": "home",
       "url": "/",
       "label": "Home",
+      "icon": "home",
       "subItems": []
     },
     {
       "id": "my_dashboards",
-      "url": "/example",
+      "url": "/example/dashboard",
       "label": "My dashboards",
+      "icon": "tachometer-alt",
       "subItems": []
     },
     {
       "id": "spaces",
-      "url": "/example",
+      "url": "/example/spaces",
       "label": "Spaces",
+      "icon": "th-large",
+      "subItems": []
+    },
+    {
+      "id": "documents",
+      "url": "/example/documents",
+      "label": "Documents",
+      "icon": "folder",
       "subItems": []
     },
     {
       "id": "bugs",
-      "url": "/example",
+      "url": "/example/bugs",
       "label": "Bugs",
+      "icon": "file-alt",
       "subItems": []
     },
     {
       "id": "epics",
-      "url": "/example",
+      "url": "/example/epics",
       "label": "Epics",
+      "icon": "book",
       "subItems": []
     },
     {
       "id": "goals",
-      "url": "/example",
+      "url": "/example/goals",
       "label": "Goals",
+      "icon": "bullseye",
       "subItems": []
     }
   ]

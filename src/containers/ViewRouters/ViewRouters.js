@@ -9,7 +9,7 @@ const ViewRouters = () => {
         <div className="view_wrapper">
             <Switch>
                 <Route exact path="/" component={MainPage}/>
-                <Route path="/example" component={ExamplePage}/>
+                <Route path="/example/*" component={ExamplePage}/>
             </Switch>
         </div>
     );
