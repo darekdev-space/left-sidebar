@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {isEqual} from 'underscore';
 
-import prepareMenu, {getChildrenPaths} from '../helpers/menuHelpers';
+import {prepareMenu, getChildrenPaths} from '../helpers/menuHelpers';
 
 import axiosMock from '../../../mock/mockService';
 

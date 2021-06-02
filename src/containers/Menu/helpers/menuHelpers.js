@@ -1,11 +1,15 @@
 export const getChildrenPaths = (menu, parentPath, recursive = false) => {
     return Object.keys(menu || {})
         .filter((path) => {
+            if (path === parentPath) {
+                return false;
+            }
+
             return path.startsWith(parentPath) && (recursive || path.length === parentPath.length + 2);
         });
 };
 
-const getPath = (path, index) => {
+export const getPath = (path, index) => {
     if (path) {
         return `${path}.${index + 1}`;
     }
@@ -13,7 +17,7 @@ const getPath = (path, index) => {
     return String(index + 1);
 };
 
-const creatFlatStructure = (items, path = '') => {
+export const createFlatStructure = (items, path = '') => {
     return (items || []).reduce((flatStructure, {
         subItems,
         ...rest
@@ -32,7 +36,7 @@ const creatFlatStructure = (items, path = '') => {
             return {
                 ...flatStructure,
                 [nextPath]: nextItem,
-                ...creatFlatStructure(subItems, nextPath)
+                ...createFlatStructure(subItems, nextPath)
             };
         }
 
@@ -43,26 +47,10 @@ const creatFlatStructure = (items, path = '') => {
     }, {});
 };
 
-export const collapseAllLevels = (menu) => {
-    return Object.entries(menu)
-        .reduce((collapsedMenu, [path, item]) => {
-            return {
-                ...collapsedMenu,
-                [path]: {
-                    ...item,
-                    isExpand: false,
-                    isVisible: !path.includes('.')
-                }
-            };
-        }, {});
-};
-
-const prepareMenu = ({menuItems} = []) => {
+export const prepareMenu = ({menuItems = []} = {}) => {
     if (!menuItems?.length) {
         return {};
     }
 
-    return creatFlatStructure(menuItems);
+    return createFlatStructure(menuItems);
 };
-
-export default prepareMenu;
